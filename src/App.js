@@ -6,6 +6,7 @@ import {
   Heading,
   Text,
   Input,
+  useToast,
 } from "@chakra-ui/react";
 import "./App.css";
 import { useEffect, useState } from "react";
@@ -17,6 +18,7 @@ import { calculateManaCost } from "./utils/utils";
 import _ from "lodash";
 
 function App() {
+  const toast = useToast();
   const [isLoading, setIsLoading] = useState(true);
   const [cardList, setCardList] = useState([]);
   const [page, setPage] = useState(1);
@@ -44,6 +46,13 @@ function App() {
       setIsLoading(false);
     } else {
       setIsLoading(false);
+      toast({
+        title: "Cards Fetching Error",
+        description: "Cards Fetching Error",
+        status: "error",
+        duration: 1000,
+        isClosable: true,
+      });
     }
   };
 
@@ -81,7 +90,21 @@ function App() {
                         addedList.find((element) => element.id === item.id) ||
                         addedList.length >= 30
                       ) {
+                        toast({
+                          title: "Card already Exist",
+                          description: "Card already Exist in the Deck",
+                          status: "error",
+                          duration: 1000,
+                          isClosable: true,
+                        });
                       } else {
+                        toast({
+                          title: "Card Added",
+                          description: "Card successfully added to the deck",
+                          status: "success",
+                          duration: 1000,
+                          isClosable: true,
+                        });
                         setAddedList([...addedList, item]);
                       }
                     }}
@@ -122,11 +145,18 @@ function App() {
                   variant="sm"
                   card={card}
                   isAdded={true}
-                  onDel={(item) =>
+                  onDel={(item) => {
+                    toast({
+                      title: "Card Deleted",
+                      description: "Card successfully deleted from the deck",
+                      status: "success",
+                      duration: 1000,
+                      isClosable: true,
+                    });
                     setAddedList(
                       addedList.filter((card) => card.id !== item.id)
-                    )
-                  }
+                    );
+                  }}
                 />
               </Center>
             ))}
