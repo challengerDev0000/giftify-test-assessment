@@ -1,1 +1,0 @@
-# giftify-test-assessment
